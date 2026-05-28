@@ -1,0 +1,66 @@
+channel:
+  name: "Science Facts Daily"
+  niche: "science facts"
+  uploads_per_day: 1
+  upload_time_utc: "12:00"
+
+ai:
+  model: "llama3-8b-8192"
+  max_tokens: 1000
+
+content:
+  topics:
+    - mind-blowing space and astronomy facts
+    - weird animal behaviors and biology
+    - human body and brain science
+    - physics and quantum mechanics simplified
+    - ancient history and archaeology discoveries
+    - chemistry reactions and experiments
+    - psychology and human behavior
+    - ocean and deep sea mysteries
+    - technology and how things work
+    - environmental science and climate
+  avoid:
+    - politics
+    - religion
+    - conspiracy theories
+    - unverified claims
+    - medical advice
+  target_audience: "18-35 year olds curious about science and the world"
+  duration_seconds: 55
+
+audio:
+  voice: "en-US-GuyNeural"
+  speed: "+5%"
+  voiceover_volume: 1.0
+
+video:
+  width: 1080
+  height: 1920
+  fps: 30
+  format: "mp4"
+  pexels_queries:
+    - "space galaxy stars"
+    - "science laboratory experiment"
+    - "ocean deep sea"
+    - "human brain neuroscience"
+    - "nature wildlife animal"
+    - "technology futuristic"
+    - "microscope cells biology"
+    - "earth atmosphere climate"
+
+youtube:
+  category_id: "27"
+  privacy: "public"
+  made_for_kids: false
+  tags:
+    - sciencefacts
+    - didyouknow
+    - science
+    - funfacts
+    - learnscience
+    - shorts
+    - scienceshorts
+    - amazingfacts
+    - educationalcontent
+    - sciencedaily
