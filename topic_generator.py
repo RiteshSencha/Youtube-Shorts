@@ -6,7 +6,7 @@ from logger import setup_logger
 
 logger = setup_logger()
 
-MODEL = "llama3-8b-8192"
+MODEL = "llama-3.1-8b-instant"
 
 
 def _call_groq(prompt):
