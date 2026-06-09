@@ -194,6 +194,17 @@ def is_video_file(path):
     return path and path.endswith(".mp4")
 
 
+def _is_stat_line(line):
+    """True if the line is primarily a number/stat — gets yellow treatment."""
+    stripped = line.strip().rstrip(".")
+    if re.match(r'^[\d,\.%x\+\-\/]+$', stripped):
+        return True
+    words = stripped.split()
+    if len(words) <= 3 and re.search(r'\d', stripped):
+        return True
+    return False
+
+
 def create_segment_clip(bg_path, sentence, seg_duration,
                         seg_index, total_segs, is_first, font_path, out_path):
 
@@ -215,12 +226,17 @@ def create_segment_clip(bg_path, sentence, seg_duration,
 
     for i, line in enumerate(wrapped_lines):
         y = start_y_base + i * line_h
-        # Dark semi-transparent box behind text
         box_pad = 18
+        if _is_stat_line(line):
+            fontcolor = "0xFFD700"
+            fontsize = 80
+        else:
+            fontcolor = "white"
+            fontsize = 64
         dt_filters.append(
             f"drawtext=fontfile='{font_path}':"
             f"text='{line}':"
-            f"fontsize=64:fontcolor=white:"
+            f"fontsize={fontsize}:fontcolor={fontcolor}:"
             f"x=(w-text_w)/2:y={y}:"
             f"shadowcolor=black:shadowx=5:shadowy=5:"
             f"box=1:boxcolor=black@0.45:boxborderw={box_pad}"
@@ -234,6 +250,7 @@ def create_segment_clip(bg_path, sentence, seg_duration,
             f"scale=1080:1920:force_original_aspect_ratio=increase,"
             f"crop=1080:1920,"
             f"eq=brightness=-0.05:saturation=1.3,"
+            f"vignette=angle=PI/4,"
             f"{all_dt}"
         )
         cmd = [
@@ -256,6 +273,7 @@ def create_segment_clip(bg_path, sentence, seg_duration,
             f"crop=1080:1920,"
             f"{effect},"
             f"eq=brightness=-0.05:saturation=1.3,"
+            f"vignette=angle=PI/4,"
             f"{all_dt}"
         )
         cmd = [
