@@ -23,18 +23,19 @@ Core fact: {topic['core_message']}
 
 STRICT RULES:
 - SCIENCE FACTS ONLY — absolutely NO motivation, self-help or inspirational content
-- Open with ONE shocking fact that stops the scroll immediately
-- Use short punchy sentences — maximum 10 words per sentence
-- Only 2-3 facts total — keep it tight and mind-blowing
-- Conversational tone like you're texting a friend
-- End with "Follow for more insane science facts"
+- First sentence MUST be just the shocking number/stat — e.g. "80 kilometers per hour." or "3 hearts."
+- Second sentence explains what it is — e.g. "That's how fast a mantis shrimp punches."
+- Maximum 8 words per sentence — shorter is better
+- Add ONE cliffhanger mid-script — e.g. "But here's the crazy part." or "Wait, it gets weirder."
+- Conversational tone — like you're texting a friend
+- End with "Follow for more insane science facts."
 - Target: exactly {target_words} words
 
-GOOD example (copy this energy):
-"Your brain can't feel pain. Zero pain receptors. That's why brain surgery is done while you're awake. Surgeons literally talk to patients mid-operation. The brain has no idea it's being touched. Follow for more insane science facts."
+GOOD example (copy this structure exactly):
+"25 million. That's how many new cells your body just made. While you read that sentence. But here's the crazy part. Your body also destroys 25 million cells at the same time. Every single second. Perfect balance. Follow for more insane science facts."
 
 BAD example (never do this):
-"The universe is vast and full of wonder. Let that inspire you to reach for the stars..."
+"Did you know that the human body is amazing and makes lots of cells every day..."
 
 Return ONLY a JSON object:
 {{
