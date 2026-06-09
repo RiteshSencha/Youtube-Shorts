@@ -23,29 +23,29 @@ def _call_groq(prompt):
 def generate_best_topic(config, count=5):
     topics = ", ".join(config["content"]["topics"])
 
-    prompt = f"""You are a science content creator for YouTube Shorts. Generate {count} SCIENCE FACT video topics.
+    prompt = f"""You are a viral science content creator for YouTube Shorts. Generate {count} SCIENCE FACT video topics.
 
 STRICT RULES:
-- Every topic MUST be a real, verifiable, specific scientific fact with a number or statistic
-- ABSOLUTELY NO motivation, self-help, inspiration, mindset, or galaxy-brain metaphors
-- Must be shocking, weird, or counterintuitive
+- Every title MUST start with or prominently feature a specific number or statistic
+- Must be a real, verifiable scientific fact — shocking, weird, or counterintuitive
+- ABSOLUTELY NO motivation, self-help, inspiration, mindset, or vague metaphors
 - Must be about: {topics}
-- GOOD examples: "Mantis Shrimp Can Punch at 80km/h", "Your Body Makes 25 Million New Cells Per Second", "Sharks Are Older Than Trees"
-- BAD examples: anything with "mind", "galaxy", "potential", "journey", "inspire", "amazing you"
+- GOOD titles: "A Mantis Shrimp Punches at 80 km/h", "You Make 25 Million New Cells Per Second", "Sharks Existed 200 Million Years Before Trees", "A Teaspoon of Neutron Star Weighs 1 Billion Tons"
+- BAD titles: anything without a number, anything vague, motivational, or about "potential", "mind", "journey"
 
 Return ONLY a JSON array, no explanation, no markdown:
 [
   {{
-    "title": "Shocking science fact title under 60 chars (e.g. 'Your Brain Produces Enough Electricity to Power a Light Bulb')",
-    "hook": "One shocking opening fact sentence (e.g. 'Did you know your stomach acid can dissolve razor blades?')",
+    "title": "Science fact title under 60 chars that MUST include a specific number",
+    "hook": "One sentence starting with the shocking number — e.g. '80 km/h. That's how fast a mantis shrimp punches.'",
     "core_message": "The main science fact explained simply in one sentence",
     "keywords": ["science", "facts"],
-    "pexels_search": "2-3 word visual search term related to the science topic",
+    "pexels_search": "2-3 word visual search term for the main subject (animal/object/place)",
     "virality_score": 8
   }}
 ]
 
-Order by virality_score descending. Make every topic genuinely surprising and educational."""
+Order by virality_score descending. Every topic must have a jaw-dropping specific number."""
 
     try:
         text = _call_groq(prompt)
@@ -65,23 +65,23 @@ Order by virality_score descending. Make every topic genuinely surprising and ed
 def generate_topic(config):
     topics = ", ".join(config["content"]["topics"])
 
-    prompt = f"""You are a science content creator for YouTube Shorts. Generate ONE science fact video topic.
+    prompt = f"""You are a viral science content creator for YouTube Shorts. Generate ONE science fact video topic.
 
 STRICT RULES:
-- Must be a real, specific scientific fact with a number or statistic
+- Title MUST include a specific number or statistic
+- Must be a real, shocking, counterintuitive scientific fact
 - ABSOLUTELY NO motivation, self-help, inspiration, or vague metaphors
-- Must be shocking, weird, or counterintuitive
 - Topic area: {topics}
-- GOOD: "Octopuses Have 3 Hearts and Blue Blood", "The Sun Makes a Sound But We Can't Hear It"
-- BAD: anything vague, motivational or about "potential", "mind", "journey"
+- GOOD: "Octopuses Have 3 Hearts and Blue Blood", "A Neutron Star Teaspoon Weighs 1 Billion Tons"
+- BAD: anything without a number, anything vague or motivational
 
 Return ONLY a JSON object, no explanation:
 {{
-  "title": "Shocking science fact title under 60 chars",
-  "hook": "One shocking opening science fact sentence starting with 'Did you know'",
+  "title": "Science fact title under 60 chars that MUST include a specific number",
+  "hook": "One sentence starting with the shocking number — e.g. '3 hearts. That's what an octopus has.'",
   "core_message": "The main science fact in one sentence",
   "keywords": ["science", "facts", "didyouknow"],
-  "pexels_search": "2-3 word visual search related to the science topic",
+  "pexels_search": "2-3 word visual search for the main subject",
   "virality_score": 8
 }}"""
 
