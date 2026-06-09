@@ -25,23 +25,27 @@ def get_font():
     raise RuntimeError("No font found. Install fonts-liberation.")
 
 
-def fetch_pexels_video(query, api_key, output_path, min_duration=8):
+def fetch_pexels_video(query, api_key, output_path, min_duration=8, used_ids=None):
     """Download a portrait video clip from Pexels."""
     try:
         headers = {"Authorization": api_key}
-        params = {"query": query, "per_page": 15, "orientation": "portrait", "size": "medium"}
+        params = {"query": query, "per_page": 20, "orientation": "portrait", "size": "medium"}
         resp = requests.get(PEXELS_VIDEO_API, headers=headers, params=params, timeout=15)
         resp.raise_for_status()
         videos = resp.json().get("videos", [])
         if not videos:
             return None
 
-        # Filter for usable clips
-        usable = [v for v in videos if v.get("duration", 0) >= min_duration]
+        # Filter for usable clips, avoid already-used videos
+        usable = [v for v in videos
+                  if v.get("duration", 0) >= min_duration
+                  and v.get("id") not in (used_ids or set())]
+        if not usable:
+            usable = [v for v in videos if v.get("id") not in (used_ids or set())]
         if not usable:
             usable = videos
 
-        video = random.choice(usable[:8])
+        video = random.choice(usable[:10])
         # Pick best quality video file
         files = sorted(video.get("video_files", []), key=lambda x: x.get("width", 0), reverse=True)
         portrait_files = [f for f in files if f.get("height", 0) > f.get("width", 0)]
@@ -113,11 +117,17 @@ def generate_backgrounds(topic, out_dir, count=4):
         f"{subject} nature",
         f"{subject} slow motion",
         f"{subject} wildlife",
-        f"{subject} 4k",
-        subject,
         f"{subject} macro",
+        f"{subject} aerial",
+        f"{subject} underwater",
+        f"{subject} timelapse",
+        f"{subject} cinematic",
+        f"{subject} 4k",
+        f"{subject} dramatic",
     ]
+    random.shuffle(queries)
 
+    used_video_ids = set()
     clips = []
     for i in range(count):
         clip_path = os.path.join(out_dir, f"bg_{i:02d}.mp4")
@@ -125,7 +135,12 @@ def generate_backgrounds(topic, out_dir, count=4):
         result = None
 
         if pexels_key:
-            result = fetch_pexels_video(queries[i % len(queries)], pexels_key, clip_path)
+            # Try two different queries per slot to maximise variety
+            for attempt in range(2):
+                q = queries[(i * 2 + attempt) % len(queries)]
+                result = fetch_pexels_video(q, pexels_key, clip_path, used_ids=used_video_ids)
+                if result:
+                    break
 
         # Fallback to photo if video fails
         if not result and pexels_key:
